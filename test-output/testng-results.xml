@@ -2,21 +2,18 @@
 <testng-results skipped="1" failed="0" total="1" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="109" started-at="2019-11-03T11:19:00Z" finished-at="2019-11-03T11:19:00Z">
+  <suite name="Default suite" duration-ms="34" started-at="2019-11-10T13:00:31Z" finished-at="2019-11-10T13:00:31Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="109" started-at="2019-11-03T11:19:00Z" finished-at="2019-11-03T11:19:00Z">
+    <test name="Default test" duration-ms="34" started-at="2019-11-10T13:00:31Z" finished-at="2019-11-10T13:00:31Z">
       <class name="org.isb.training.selenium.RunTest">
-        <test-method status="FAIL" signature="beforeClass()[pri:0, instance:org.isb.training.selenium.RunTest@27efef64]" name="beforeClass" is-config="true" duration-ms="0" started-at="2019-11-03T06:19:00Z" finished-at="2019-11-03T06:19:00Z">
-          <exception class="java.io.FileNotFoundException">
+        <test-method status="FAIL" signature="beforeClass()[pri:0, instance:org.isb.training.selenium.RunTest@1ce92674]" name="beforeClass" is-config="true" duration-ms="0" started-at="2019-11-10T08:00:31Z" finished-at="2019-11-10T08:00:31Z">
+          <exception class="java.lang.NoClassDefFoundError">
             <message>
-              <![CDATA[TestResults\TestResult_2019Nov03_06-19-00.xlsx (The system cannot find the file specified)]]>
+              <![CDATA[org/isb/training/selenium/config/Constants]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.io.FileNotFoundException: TestResults\TestResult_2019Nov03_06-19-00.xlsx (The system cannot find the file specified)
-	at java.io.FileInputStream.open0(Native Method)
-	at java.io.FileInputStream.open(FileInputStream.java:195)
-	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+              <![CDATA[java.lang.NoClassDefFoundError: org/isb/training/selenium/config/Constants
 	at org.isb.training.selenium.RunTest.beforeClass(RunTest.java:47)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -42,20 +39,26 @@
 	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+Caused by: java.lang.ClassNotFoundException: org.isb.training.selenium.config.Constants
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:382)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:349)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 25 more
 ]]>
             </full-stacktrace>
-          </exception> <!-- java.io.FileNotFoundException -->
+          </exception> <!-- java.lang.NoClassDefFoundError -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeClass -->
-        <test-method status="SKIP" signature="afterClass()[pri:0, instance:org.isb.training.selenium.RunTest@27efef64]" name="afterClass" is-config="true" duration-ms="0" started-at="2019-11-03T06:19:00Z" finished-at="2019-11-03T06:19:00Z">
+        <test-method status="SKIP" signature="readExcel()[pri:0, instance:org.isb.training.selenium.RunTest@1ce92674]" name="readExcel" duration-ms="2" started-at="2019-11-10T08:00:31Z" finished-at="2019-11-10T08:00:31Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- readExcel -->
+        <test-method status="SKIP" signature="afterClass()[pri:0, instance:org.isb.training.selenium.RunTest@1ce92674]" name="afterClass" is-config="true" duration-ms="0" started-at="2019-11-10T08:00:31Z" finished-at="2019-11-10T08:00:31Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterClass -->
-        <test-method status="SKIP" signature="verifySearchButton()[pri:0, instance:org.isb.training.selenium.RunTest@27efef64]" name="verifySearchButton" duration-ms="0" started-at="2019-11-03T06:19:00Z" finished-at="2019-11-03T06:19:00Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifySearchButton -->
       </class> <!-- org.isb.training.selenium.RunTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->

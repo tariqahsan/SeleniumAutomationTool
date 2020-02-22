@@ -6,7 +6,7 @@
       <class name="org.isb.training.selenium.RunTest">
         <methods>
           <include name="beforeClass"/>
-          <include name="verifySearchButton"/>
+          <include name="readExcel"/>
         </methods>
       </class> <!-- org.isb.training.selenium.RunTest -->
     </classes>
