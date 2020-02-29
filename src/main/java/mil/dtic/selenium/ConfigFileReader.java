@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Properties;
 
 // creates an object which is read the configuration properties files under Config folder
@@ -31,15 +32,21 @@ public class ConfigFileReader {
 	}
 	
 	public String getBrowser(){
-		String browser = properties.getProperty("browser");// name has to be the same as in configuration properties files
+		String browser = properties.getProperty("browser"); // name has to be the same as in configuration properties files
 		if(browser!= null) return browser;
 		else throw new RuntimeException("browser not specified in the configuration.properties file.");		
 	}
 	
 	public String getDriverPath(){
-		String driverPath = properties.getProperty("driverPath");// name has to be the same as in configuration properties files
+		String driverPath = properties.getProperty("driverPath"); // name has to be the same as in configuration properties files
 		if(driverPath!= null) return driverPath;
 		else throw new RuntimeException("driverPath not specified in the configuration.properties file.");		
+	}
+	
+	public int getDriverImplicitWaitTime(){
+		int implicitWaitTime = Integer.parseInt(properties.getProperty("implicitWaitTime"));// name has to be the same as in configuration properties files
+		if (Optional.ofNullable(implicitWaitTime).orElse(0) != 0) return implicitWaitTime;
+		else throw new RuntimeException("implicitWaitTime not specified in the configuration.properties file.");		
 	}
 	
 	public String getTestSuite(){

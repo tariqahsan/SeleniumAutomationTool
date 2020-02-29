@@ -1,9 +1,12 @@
 package mil.dtic.selenium;
 
+
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -32,7 +35,7 @@ public class KeywordFunctions {
 			
 			try {
 				
-				System.out.println("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
+				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
 				runDriver(webElement, webElementValue).click();
 				logger.info("Click is performed sucessfully");
 				result.setMessage("Click is performed sucessfully");
@@ -43,10 +46,45 @@ public class KeywordFunctions {
 				result.setResult(false);
 			}
 			return result;
+		} else if (keyword.equalsIgnoreCase("DoubleClick")) {
+			
+			try {
+				
+				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);		
+				Actions actions = new Actions(driver);
+				WebElement elementLocator = runDriver( webElement,webElementValue);
+				actions.doubleClick(elementLocator).perform();
+				logger.info("Double Click is performed sucessfully");
+				result.setMessage("Double Click is performed sucessfully");
+				result.setResult(true);
+			} catch (Exception e) {
+				logger.error("Double Click operation was not done successfully : " + e.getMessage());
+				result.setMessage("Double Click operation was not done successfully");
+				result.setResult(false);
+			}
+			return result;
+		} else if (keyword.equalsIgnoreCase("RightClick")) {
+			
+			try {
+				
+				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);		
+				Actions actions = new Actions(driver);
+				WebElement elementLocator = runDriver( webElement,webElementValue);
+				actions.contextClick(elementLocator).perform();
+				logger.info("Double Click is performed sucessfully");
+				result.setMessage("Double Click is performed sucessfully");
+				result.setResult(true);
+			} catch (Exception e) {
+				logger.error("Double Click operation was not done successfully : " + e.getMessage());
+				result.setMessage("Double Click operation was not done successfully");
+				result.setResult(false);
+			}
+			return result;
 		} else if (keyword.equalsIgnoreCase("Input")) {
 			try {
-				System.out.println("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
-				runDriver(webElement, webElementValue).sendKeys(inputValue);;
+				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
+				runDriver(webElement, webElementValue).clear();
+				runDriver(webElement, webElementValue).sendKeys(inputValue);
 				logger.info("Input is performed sucessfully");
 				result.setMessage("Input is performed sucessfully");
 				result.setResult(true);
@@ -60,6 +98,8 @@ public class KeywordFunctions {
 		} else if (keyword.equalsIgnoreCase("dropdown")) {
 			try {
 				Select dropDown = new Select(runDriver(webElement, webElementValue));
+				logger.info(webElement + " " + webElementValue);
+				logger.info(inputValue);
 				dropDown.selectByVisibleText(inputValue);
 				result.setMessage("dropdown selection was done successfully");
 				result.setResult(true);
@@ -70,6 +110,69 @@ public class KeywordFunctions {
 			}
 			return result;
 
+		} else if (keyword.equalsIgnoreCase("dropdownValueNotVisible")) {
+			try {
+				Select dropDown = new Select(runDriver(webElement, webElementValue));
+				logger.info(webElement + " " + webElementValue);
+				logger.info(inputValue);
+				dropDown.selectByVisibleText(inputValue);
+				result.setMessage("dropdown selection was done successfully");
+				result.setResult(true);
+			} catch (Exception e) {
+				logger.error("dropdown selection was not done successfully : " + e.getMessage());
+				result.setMessage("dropdown selection was not done successfully");
+				result.setResult(false);
+			}
+			return result;
+
+		} else if (keyword.equalsIgnoreCase("partialLink")) {		
+			try {
+				
+				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+				Actions actions = new Actions(driver);
+	
+				WebElement expRadioBtn = runDriver(webElement, webElementValue);
+				actions.moveToElement(expRadioBtn).click().build().perform();
+				logger.info("The URL is ... " + driver.getCurrentUrl());
+				
+				result.setMessage("partial link selection was done successfully");
+				result.setResult(true);
+			} catch (Exception e) {
+				logger.error("partial link selection was not done successfully : " + e.getMessage());
+				result.setMessage("partial link selection was not done successfully");
+				result.setResult(false);
+			}
+			return result;
+			
+		} else if (keyword.equalsIgnoreCase("partialLinkCompare")) {		
+			try {
+				
+				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+				Actions actions = new Actions(driver);
+	
+				WebElement expRadioBtn = runDriver(webElement, webElementValue);
+				actions.moveToElement(expRadioBtn).click().build().perform();
+				logger.info("The URL is ... <" + inputValue + ">");
+				logger.info("The URL is ... <" + driver.getCurrentUrl()+ ">");		
+				
+				if (driver.getCurrentUrl().equalsIgnoreCase(inputValue)) {
+					
+					result.setMessage("partial link selection was done successfully and the url links matches");
+					result.setResult(true);	
+					
+				} else {
+					
+					result.setMessage("URL link compare with input value does not match");
+					result.setResult(false);
+				}
+				
+			} catch (Exception e) {
+				logger.error("partial link selection and compare was not done successfully : " + e.getMessage());
+				result.setMessage("partial link selection and compare was not done successfully");
+				result.setResult(false);
+			}
+			return result;
+			
 		} else if (keyword.equalsIgnoreCase("radio")) {		
 			try {
 				// To prevent the error occuring during execution - 
@@ -84,16 +187,16 @@ public class KeywordFunctions {
 				WebElement expRadioBtn = runDriver(webElement, webElementValue);
 				// Checking if the Male Radio button is displayed on the Webpage and printing the status
 				boolean radioBtnIsDisplayed = expRadioBtn.isDisplayed();
-				System.out.println("Is Exp radio button displayed: " + radioBtnIsDisplayed);
+				logger.info("Is Exp radio button displayed: " + radioBtnIsDisplayed);
 	
 				// Checking if the Male Radio button is enabled on the webpage and printing the status
 				boolean radioBtnIsEnabled = expRadioBtn.isEnabled();
-				System.out.println("Is Exp radio button enabled: " + radioBtnIsEnabled);
+				logger.info("Is Exp radio button enabled: " + radioBtnIsEnabled);
 	
 				// Checking the default radio button selection status
 				boolean radioBtnIsSelected = expRadioBtn.isSelected();
 	
-				System.out.println("Default Radio button selection Status: " + radioBtnIsSelected);
+				logger.info("Default Radio button selection Status: " + radioBtnIsSelected);
 				
 				// Selecting Exp (Experience) radio button
 	
@@ -103,7 +206,7 @@ public class KeywordFunctions {
 				
 				// Re-checking the male radio button selection status and printing it..
 				boolean radioBtnNewSelectionStatus = expRadioBtn.isSelected();
-				System.out.println("Experience radio Selection status after perform click() event: " + radioBtnNewSelectionStatus);
+				logger.info("Experience radio Selection status after perform click() event: " + radioBtnNewSelectionStatus);
 				
 				result.setMessage("radio button selection was done successfully");
 				result.setResult(true);
@@ -116,10 +219,10 @@ public class KeywordFunctions {
 			
 		} else if (keyword.equalsIgnoreCase("upload")) {
 			try {
-				System.out.println("in upload file ...");
+				logger.info("in upload file ...");
 				runDriver(webElement, webElementValue).sendKeys(System.getProperty("user.dir") + inputValue);
 				//driver.findElement(By.id(webElementValue)).sendKeys(System.getProperty("user.dir") + inputValue);
-				System.out.println("upload is performed sucessfully ...");
+				logger.info("upload is performed sucessfully ...");
 				logger.info("upload is performed sucessfully");
 				result.setMessage("upload is performed sucessfully");
 				result.setResult(true);
@@ -194,7 +297,6 @@ public class KeywordFunctions {
 			return result;
 		} else if (keyword.equalsIgnoreCase("VerifyText")) {
 
-//			if (inputValue.equalsIgnoreCase(driver.findElement(By.xpath(webElementValue)).getText())) {
 			if (inputValue.equalsIgnoreCase(runDriver(webElement, webElementValue).getText())) {
 				logger.info("Verify text successful");
 				result.setMessage("Verify text successful");
@@ -208,7 +310,9 @@ public class KeywordFunctions {
 
 		} else if (keyword.equalsIgnoreCase("Pop")) {
 			// Do nothing
+			driver.switchTo().alert().accept();
 		}
+		
 		result.setMessage("Done");
 		result.setResult(false);
 		return result;
@@ -217,19 +321,22 @@ public class KeywordFunctions {
 	public WebElement runDriver(String webElement, String webElementValue) {
 		switch(webElement) {
         case "id" :
-           System.out.println("Web Element is an - > id");
+           logger.info("Web Element is an - > id");
            return driver.findElement(By.id(webElementValue));
         case "xpath":
-        	System.out.println("Web Element is an - > xpath"); 
+        	logger.info("Web Element is an - > xpath"); 
         	return driver.findElement(By.xpath(webElementValue));
         case "name" :
-       	 	System.out.println("Web Element is an - > name"); 
+       	 	logger.info("Web Element is an - > name"); 
        	 	return driver.findElement(By.name(webElementValue));
         case "class" :
-       	 	System.out.println("Web Element is an - > className"); 
+       	 	logger.info("Web Element is an - > className"); 
        	 	return driver.findElement(By.className(webElementValue));
+        case "link" :
+       	 	logger.info("Web Element is an - > partialLink and the webElementValue is -> " + webElementValue); 
+       	 	return driver.findElement(By.partialLinkText(webElementValue));
         default :
-           System.out.println("Invalid web element");
+           logger.info("Invalid web element");
      }
 		return null;
 	}

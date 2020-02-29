@@ -26,6 +26,7 @@ public class Driver {
 		configFileReader = new ConfigFileReader();
 		logger.info("Configuration File Reader : Browser -> " + configFileReader.getBrowser());
 		logger.info("Configuration File Reader : Driver Path -> " + configFileReader.getDriverPath());
+		logger.info("Configuration File Reader : Driver Path -> " + configFileReader.getDriverPath());
 
 		if(configFileReader.getBrowser().equalsIgnoreCase("Firefox")) {
 			System.setProperty("webdriver.gecko.driver", configFileReader.getDriverPath());
@@ -52,7 +53,7 @@ public class Driver {
 			// When run script from Linux terminal tunnel, like run by Jenkins. In general, Linux terminal tunnel not have display screen, 
 			// but run script with headful model require a physical or virtual display. Run with headless model when not setup virtual 
 			// display by xWindow/xvbf
-			//options.addArguments("headless");
+			//options.addArguments("headless"); // Set headless to run from Jenkins
 			options.addArguments("start-maximized"); // Don't maximize Chrome, because has no display if running from Jenkins
 			options.setExperimentalOption("useAutomationExtension", false);
 			driver = new ChromeDriver(options);
@@ -60,8 +61,9 @@ public class Driver {
 
 		}
 
-		int implicitWaitTime=(10);
+		int implicitWaitTime=(configFileReader.getDriverImplicitWaitTime());
 		driver.manage().timeouts().implicitlyWait(implicitWaitTime, TimeUnit.SECONDS);
+		logger.info("Wait time is -> " + implicitWaitTime);
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();		
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
