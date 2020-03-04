@@ -53,7 +53,7 @@ public class Driver {
 			// When run script from Linux terminal tunnel, like run by Jenkins. In general, Linux terminal tunnel not have display screen, 
 			// but run script with headful model require a physical or virtual display. Run with headless model when not setup virtual 
 			// display by xWindow/xvbf
-			//options.addArguments("headless"); // Set headless to run from Jenkins
+			options.addArguments("headless"); // Set headless to run from Jenkins
 			options.addArguments("start-maximized"); // Don't maximize Chrome, because has no display if running from Jenkins
 			options.setExperimentalOption("useAutomationExtension", false);
 			driver = new ChromeDriver(options);
