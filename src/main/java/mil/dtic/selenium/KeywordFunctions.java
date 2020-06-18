@@ -125,6 +125,21 @@ public class KeywordFunctions {
 			}
 			return result;
 
+		} if (keyword.equalsIgnoreCase("Clear")) {
+
+			try {
+
+				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
+				runDriver(webElement, webElementValue).clear();
+				logger.info("Clear input is performed sucessfully");
+				result.setMessage("Clear input is performed sucessfully");
+				result.setResult(true);
+			} catch (Exception e) {
+				logger.error("Clear input operation was not done successfully : " + e.getMessage());
+				result.setMessage("Clear input operation was not done successfully");
+				result.setResult(false);
+			}
+			return result;
 		} else if (keyword.equalsIgnoreCase("dropdown")) {
 			try {
 				Select dropDown = new Select(runDriver(webElement, webElementValue));
