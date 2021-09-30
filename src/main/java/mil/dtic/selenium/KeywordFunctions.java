@@ -1,26 +1,24 @@
 package mil.dtic.selenium;
 
 
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ValueRange;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class KeywordFunctions {
 
 	final static Logger logger = Logger.getLogger(KeywordFunctions.class);
 	private Result result;
 	private WebDriver driver;
-	boolean compareBoolean = false;
 
 	public KeywordFunctions(WebDriver driver) {
 		this.driver = driver;
@@ -32,17 +30,13 @@ public class KeywordFunctions {
 		String inputValue = testStepInputs.getInputValue();
 		String webElement = testStepInputs.getWebElement();
 		String webElementValue = testStepInputs.getWebElementValue();
-		String comparisonType = testStepInputs.getComparisonType();
-		String valueOne = testStepInputs.getValueOne();
-		String valueTwo = testStepInputs.getValueTwo();
-		String failMessage = testStepInputs.getFailMessage();
-
+		
 		logger.info("keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
 		result = new Result();
 		if (keyword.equalsIgnoreCase("Click")) {
-
+			
 			try {
-
+				
 				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
 				runDriver(webElement, webElementValue).click();
 				logger.info("Click is performed sucessfully");
@@ -55,9 +49,9 @@ public class KeywordFunctions {
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("DoubleClick")) {
-
+			
 			try {
-
+				
 				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);		
 				Actions actions = new Actions(driver);
 				WebElement elementLocator = runDriver( webElement,webElementValue);
@@ -72,9 +66,9 @@ public class KeywordFunctions {
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("RightClick")) {
-
+			
 			try {
-
+				
 				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);		
 				Actions actions = new Actions(driver);
 				WebElement elementLocator = runDriver( webElement,webElementValue);
@@ -90,62 +84,26 @@ public class KeywordFunctions {
 			return result;
 		} else if (keyword.equalsIgnoreCase("Input")) {
 			try {
-				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue + " " + valueOne + " " + valueTwo);
+				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
 				runDriver(webElement, webElementValue).clear();
 				runDriver(webElement, webElementValue).sendKeys(inputValue);
-				logger.info("valueOne : " + valueOne + " valueTwo : " + valueTwo + " failMessage : " + failMessage);
-				if (!StringUtils.isEmpty(failMessage)) {
-					logger.info("failMessage is <" + failMessage + ">");
-					if (!StringUtils.isEmpty(comparisonType)) {	
-						logger.info("comparisonType is <" + comparisonType + ">");
-						logger.info("Before : compareBoolean is <" + compareBoolean + ">");
-						compareBoolean = compare(testStepInputs);
-						
-						logger.info("After : compareBoolean is <" + compareBoolean + ">");
-						if (!compareBoolean) {
-							logger.info("Inside ...");
-							result.setMessage(failMessage + " [ Comparison Type : " + comparisonType + " : "+ valueOne + " - " + valueTwo + " ]");
-							result.setResult(false);
-						} else {
-							logger.info("Input is performed sucessfully");
-							result.setMessage("Input is performed sucessfully");
-							result.setResult(true);
-						}
-					}
-				} else {
-					logger.info("Input is performed sucessfully");
-					result.setMessage("Input is performed sucessfully");
-					result.setResult(true);
-				}
+				logger.info("Input is performed sucessfully");
+				result.setMessage("Input is performed sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Not able to enter input : " + e.getMessage());
 				result.setMessage("Not able to enter input");
 				result.setResult(false);
-				throw e;
 			}
 			return result;
-
-		} if (keyword.equalsIgnoreCase("Clear")) {
-
-			try {
-
-				logger.info("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
-				runDriver(webElement, webElementValue).clear();
-				logger.info("Clear input is performed sucessfully");
-				result.setMessage("Clear input is performed sucessfully");
-				result.setResult(true);
-			} catch (Exception e) {
-				logger.error("Clear input operation was not done successfully : " + e.getMessage());
-				result.setMessage("Clear input operation was not done successfully");
-				result.setResult(false);
-			}
-			return result;
+			
 		} else if (keyword.equalsIgnoreCase("dropdown")) {
 			try {
 				Select dropDown = new Select(runDriver(webElement, webElementValue));
 				logger.info(webElement + " " + webElementValue);
 				logger.info(inputValue);
 				//dropDown.selectByVisibleText(inputValue);
+				System.out.println("Input Value --> <" + inputValue + ">");
 				dropDown.selectByValue(inputValue);
 				result.setMessage("dropdown selection was done successfully");
 				result.setResult(true);
@@ -173,14 +131,14 @@ public class KeywordFunctions {
 
 		} else if (keyword.equalsIgnoreCase("partialLink")) {		
 			try {
-
+				
 				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 				Actions actions = new Actions(driver);
-
+	
 				WebElement expRadioBtn = runDriver(webElement, webElementValue);
 				actions.moveToElement(expRadioBtn).click().build().perform();
 				logger.info("The URL is ... " + driver.getCurrentUrl());
-
+				
 				result.setMessage("partial link selection was done successfully");
 				result.setResult(true);
 			} catch (Exception e) {
@@ -189,36 +147,36 @@ public class KeywordFunctions {
 				result.setResult(false);
 			}
 			return result;
-
+			
 		} else if (keyword.equalsIgnoreCase("partialLinkCompare")) {		
 			try {
-
+				
 				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 				Actions actions = new Actions(driver);
-
+	
 				WebElement expRadioBtn = runDriver(webElement, webElementValue);
 				actions.moveToElement(expRadioBtn).click().build().perform();
 				logger.info("The URL is ... <" + inputValue + ">");
 				logger.info("The URL is ... <" + driver.getCurrentUrl()+ ">");		
-
+				
 				if (driver.getCurrentUrl().equalsIgnoreCase(inputValue)) {
-
+					
 					result.setMessage("partial link selection was done successfully and the url links matches");
 					result.setResult(true);	
-
+					
 				} else {
-
+					
 					result.setMessage("URL link compare with input value does not match");
 					result.setResult(false);
 				}
-
+				
 			} catch (Exception e) {
 				logger.error("partial link selection and compare was not done successfully : " + e.getMessage());
 				result.setMessage("partial link selection and compare was not done successfully");
 				result.setResult(false);
 			}
 			return result;
-
+			
 		} else if (keyword.equalsIgnoreCase("radio")) {		
 			try {
 				// To prevent the error occuring during execution - 
@@ -228,32 +186,32 @@ public class KeywordFunctions {
 				// According to the video it's been suggested to use - org.openqa.selenium.interactions.Actions class methods
 				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 				Actions actions = new Actions(driver);
-
+	
 				//WebElement expRadioBtn = driver.findElement(By.id(webElementValue));
 				WebElement expRadioBtn = runDriver(webElement, webElementValue);
 				// Checking if the Male Radio button is displayed on the Webpage and printing the status
 				boolean radioBtnIsDisplayed = expRadioBtn.isDisplayed();
 				logger.info("Is Exp radio button displayed: " + radioBtnIsDisplayed);
-
+	
 				// Checking if the Male Radio button is enabled on the webpage and printing the status
 				boolean radioBtnIsEnabled = expRadioBtn.isEnabled();
 				logger.info("Is Exp radio button enabled: " + radioBtnIsEnabled);
-
+	
 				// Checking the default radio button selection status
 				boolean radioBtnIsSelected = expRadioBtn.isSelected();
-
+	
 				logger.info("Default Radio button selection Status: " + radioBtnIsSelected);
-
+				
 				// Selecting Exp (Experience) radio button
-
+	
 				// expRadioBtn.click(); // Commented out to execute the click function in the way below
 				// Using expRadioBtn wrapped around Actions.moveToElement to prevent the error mentioned above
 				actions.moveToElement(expRadioBtn).click().build().perform();
-
+				
 				// Re-checking the male radio button selection status and printing it..
 				boolean radioBtnNewSelectionStatus = expRadioBtn.isSelected();
 				logger.info("Experience radio Selection status after perform click() event: " + radioBtnNewSelectionStatus);
-
+				
 				result.setMessage("radio button selection was done successfully");
 				result.setResult(true);
 			} catch (Exception e) {
@@ -262,12 +220,13 @@ public class KeywordFunctions {
 				result.setResult(false);
 			}
 			return result;
-
+			
 		} else if (keyword.equalsIgnoreCase("upload")) {
 			try {
 				logger.info("in upload file ...");
 				runDriver(webElement, webElementValue).sendKeys(System.getProperty("user.dir") + inputValue);
 				//driver.findElement(By.id(webElementValue)).sendKeys(System.getProperty("user.dir") + inputValue);
+				logger.info("upload is performed sucessfully ...");
 				logger.info("upload is performed sucessfully");
 				result.setMessage("upload is performed sucessfully");
 				result.setResult(true);
@@ -279,7 +238,7 @@ public class KeywordFunctions {
 			return result;
 		} else if (keyword.equalsIgnoreCase("gettext")) {
 			try {
-
+				
 				//driver.findElement(By.xpath(webElementValue)).getText();
 				runDriver(webElement, webElementValue).getText();
 				logger.info("getText is performed sucessfully");
@@ -330,7 +289,7 @@ public class KeywordFunctions {
 				} else {
 					Thread.sleep(5000);
 				}
-
+				
 				logger.info("sleep is done sucessfully");
 				result.setMessage("sleep is done sucessfully");
 				result.setResult(true);
@@ -357,114 +316,59 @@ public class KeywordFunctions {
 			// Do nothing
 			driver.switchTo().alert().accept();
 		}
-
+		
 		result.setMessage("Done");
 		result.setResult(false);
 		return result;
 	}
-
-	public WebElement runDriver(String webElement, String webElementValue) {
-		switch(webElement) {
-		case "id" :
-			logger.info("Web Element is an - > id");
-			return driver.findElement(By.id(webElementValue));
-		case "xpath":
-			logger.info("Web Element is an - > xpath"); 
-			return driver.findElement(By.xpath(webElementValue));
-		case "name" :
-			logger.info("Web Element is an - > name"); 
-			return driver.findElement(By.name(webElementValue));
-		case "class" :
-			logger.info("Web Element is an - > className"); 
-			return driver.findElement(By.className(webElementValue));
-		case "link" :
-			logger.info("Web Element is an - > partialLink and the webElementValue is -> " + webElementValue); 
-			return driver.findElement(By.partialLinkText(webElementValue));
-		default :
-			logger.info("Invalid web element");
-		}
-		return null;
-	}
 	
-	private boolean compare(TestStepInputs tsi) {
+	public WebElement runDriver(String webElement, String webElementValue) {
 		
-		if(tsi.getComparisonType().equals("between-input") || tsi.getComparisonType().equals("between-current") || tsi.getComparisonType().equals("before") || tsi.getComparisonType().equals("after")) {
-			return dateCompare(tsi);
-		}
+		long waitTime = 30;
+		WebDriverWait wait = new WebDriverWait(driver, waitTime);
 		
-		//Long i = Long.valueOf(tsi.getValueOne()).compareTo(Long.valueOf(tsi.getValueTwo()));
-		int i = Long.compare(Long.valueOf(tsi.getValueOne()), Long.valueOf(tsi.getValueTwo())); 
-		switch(tsi.getComparisonType()) {
-
-		case "range" : 
-			logger.info("Is input value : " + Long.parseLong(tsi.getInputValue()) + " within range of " + tsi.getValueOne() + " and " + tsi.getValueTwo() + "?"); 
-			ValueRange range = ValueRange.of(Long.parseLong(tsi.getValueOne()), Long.parseLong(tsi.getValueTwo()));
-			return range.isValidValue(Long.parseLong(tsi.getInputValue()));
-		case "equal" :
-			logger.info("Input value " + Long.parseLong(tsi.getInputValue()) + " is greater than " + Long.parseLong(tsi.getValueOne()) + " ?");
-			
-			if (i == 0) {
-				return true;
-			} else {
-				return false;
-			}
-		case "greater" :
-			logger.info("Input value " + Long.parseLong(tsi.getInputValue()) + " is greater than " + Long.parseLong(tsi.getValueOne()) + " ?");
-			
-			if (i == 1) {
-				return true;
-			} else {
-				return false;
-			}
-			
-		case "lesser" :
-			logger.info("Is Input value " + Long.parseLong(tsi.getInputValue()) + " is lesser than " + Long.parseLong(tsi.getValueOne()) + " ?"); 
-			if (i == -1) {
-				return true;
-			} else {
-				return false;
-			}	
-		default :
-			logger.info("Invalid input value");
-		}
-		return true;
-	}
-
-	public boolean dateCompare(TestStepInputs tsi) {
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-		//LocalDate date = LocalDate.parse("05/10/2019", formatter);
-		LocalDate localInputDate = LocalDate.parse(tsi.getInputValue(), formatter);
-		LocalDate localDate1 = LocalDate.parse(tsi.getValueOne(), formatter);
-		LocalDate localDate2 = LocalDate.parse(tsi.getValueTwo(), formatter);
-		// create an LocalDate object 
-		LocalDate currentDate = LocalDate.now();
-
-		logger.info("LocalDate localDate1 : " + localDate1);
-		logger.info("LocalDate localDate2 : " + localDate2); 
-		logger.info("LocalDate localInputDate : " + localInputDate); 
-		logger.info("LocalDate currentDate : " + currentDate); 
-        
-		switch(tsi.getComparisonType()) {
-		case "between-current" : 
-			// If a date is within a date range
-	        boolean rangeCurrent =  currentDate.isAfter(localDate1) && currentDate.isBefore(localDate2);
-	        return rangeCurrent;
-		case "between-input" : 
-			// If a date is within a date range
-	        boolean rangeInput =  localInputDate.isAfter(localDate1) && localInputDate.isBefore(localDate2);
-	        return rangeInput;
-		case "before" :
-			logger.info("Date is before " + localDate1); 
-			return localDate1.isBefore(currentDate);		
-		case "after" :
-			logger.info("Date is after " + localDate1); 
-			return localDate1.isAfter(currentDate);		
-		default :
-			logger.info("Invalid date element");
-		}
-		return false;
-
+		switch(webElement) {
+        case "id" :
+           logger.info("Web Element is an - > id");
+           logger.info("Now waiting for 30 ..."); 
+		   wait.until(ExpectedConditions.presenceOfElementLocated(By.id(webElementValue)));
+		   logger.info("Found the element, moving on ..."); 
+           return driver.findElement(By.id(webElementValue));      
+        case "css":
+			logger.info("Web Element is an - > css"); 
+			// Wait 	
+			logger.info("Now waiting for 30 ..."); 
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(webElementValue)));
+			logger.info("Found the element, moving on ..."); 
+			return driver.findElement(By.cssSelector(webElementValue));		
+        case "xpath":
+        	logger.info("Web Element is an - > xpath");
+        	logger.info("Now waiting for 30 ..."); 
+  		    wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(webElementValue)));
+  		    logger.info("Found the element, moving on ..."); 
+        	return driver.findElement(By.xpath(webElementValue));
+        case "name" :
+       	 	logger.info("Web Element is an - > name");
+        	logger.info("Now waiting for 30 ..."); 
+  		    wait.until(ExpectedConditions.presenceOfElementLocated(By.name(webElementValue)));
+  		    logger.info("Found the element, moving on ..."); 
+       	 	return driver.findElement(By.name(webElementValue));
+        case "class" :
+       	 	logger.info("Web Element is an - > className");
+        	logger.info("Now waiting for 30 ..."); 
+  		    wait.until(ExpectedConditions.presenceOfElementLocated(By.className(webElementValue)));
+  		    logger.info("Found the element, moving on ..."); 
+       	 	return driver.findElement(By.className(webElementValue));
+        case "link" :
+       	 	logger.info("Web Element is an - > partialLink and the webElementValue is -> " + webElementValue);
+        	logger.info("Now waiting for 30 ..."); 
+  		    wait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(webElementValue)));
+  		    logger.info("Found the element, moving on ..."); 
+       	 	return driver.findElement(By.partialLinkText(webElementValue));
+        default :
+           logger.info("Invalid web element");
+     }
+		return null;
 	}
 
 }

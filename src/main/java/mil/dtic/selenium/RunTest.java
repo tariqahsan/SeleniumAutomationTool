@@ -129,12 +129,11 @@ public class RunTest {
 							String webElementValue = excelSheetDriver.readCell(testStepSheet, 4, w);
 							String inputValue = excelSheetDriver.readCell(testStepSheet, 5, w);
 							String testStepsKeyword = excelSheetDriver.readCell(testStepSheet, 6, w);
-							String testStepsComparisonType = excelSheetDriver.readCell(testStepSheet, 7, w);
-							String testStepsValueOne = excelSheetDriver.readCell(testStepSheet, 8, w);
-							String testStepsValueTwo = excelSheetDriver.readCell(testStepSheet, 9, w);
-							String testStepsFailMessage = excelSheetDriver.readCell(testStepSheet, 10, w);
+							String testStepsAssertMethod = excelSheetDriver.readCell(testStepSheet, 7, w);
+							String testStepsActualValue = excelSheetDriver.readCell(testStepSheet, 8, w);
+							String testStepsExpectedValue = excelSheetDriver.readCell(testStepSheet, 9, w);
 
-							Input stepInput = new Input(sheetTestSteps, testStepsSerialNumber, testStepCaseNumber, testCaseExecutionFlag, new Object[] {testStepsSerialNumber, testStepCaseNumber, testStepsDescription, webElement, webElementValue, inputValue, testStepsKeyword, testStepsValueOne, testStepsValueTwo });
+							Input stepInput = new Input(sheetTestSteps, testStepsSerialNumber, testStepCaseNumber, testCaseExecutionFlag, new Object[] {testStepsSerialNumber, testStepCaseNumber, testStepsDescription, webElement, webElementValue, inputValue, testStepsKeyword, testStepsAssertMethod, testStepsActualValue, testStepsExpectedValue });
 
 							testStepInputs.setTestStepsSerialNumber(testStepsSerialNumber);
 							testStepInputs.setTestStepCaseNumber(testStepCaseNumber);
@@ -143,10 +142,10 @@ public class RunTest {
 							testStepInputs.setWebElementValue(webElementValue);
 							testStepInputs.setInputValue(inputValue);
 							testStepInputs.setTestStepsKeyword(testStepsKeyword);
-							testStepInputs.setComparisonType(testStepsComparisonType);
-							testStepInputs.setValueOne(testStepsValueOne);
-							testStepInputs.setValueTwo(testStepsValueTwo);
-							testStepInputs.setFailMessage(testStepsFailMessage);
+							testStepInputs.setActualValue(testStepsActualValue);
+							testStepInputs.setAssertMethod(testStepsAssertMethod);
+							testStepInputs.setActualValue(testStepsActualValue);
+							testStepInputs.setExpectedValue(testStepsExpectedValue);
 
 							if (testCaseNumber.equalsIgnoreCase(testStepCaseNumber)) {
 								logger.info("testStepsSerialNumber:" + testStepsSerialNumber);
@@ -155,17 +154,16 @@ public class RunTest {
 								logger.info("webElementValue:" + webElementValue);
 								logger.info("inputValue:" + inputValue);
 								logger.info("testStepsKeyword:" + testStepsKeyword);
-								logger.info("testStepsComparisonType:" + testStepsComparisonType);
-								logger.info("testStepsValueOne:" + testStepsValueOne);
-								logger.info("testStepsValueTwo:" + testStepsValueTwo);
-								logger.info("testStepsFailMessage:" + testStepsFailMessage);
+								logger.info("testStepsAssertMethod:" + testStepsAssertMethod);
+								logger.info("testStepsActualValue:" + testStepsActualValue);
+								logger.info("testStepsExpectedValue:" + testStepsExpectedValue);
 								logger.info("testCaseExecutionFlag:" + testCaseExecutionFlag);
 
 								logger.info("Setting testCaseExecutionFlag:" + testCaseExecutionFlag + " to testCaseNumber : "  + testCaseNumber);
 								stepInput.setExecutionFlag(testCaseExecutionFlag);
 
 								logger.info("Executing performActions Method with the five arguments -"
-										+ testStepsKeyword + " " + inputValue + " " + webElementValue + " " + testStepsValueOne + " " + testStepsValueTwo);
+										+ testStepsKeyword + " " + inputValue + " " + webElementValue + " " + testStepsAssertMethod + " " + testStepsActualValue + " " + testStepsExpectedValue);
 
 								// Run tests
 								result = comlib.runTest(testStepInputs);
@@ -176,7 +174,7 @@ public class RunTest {
 									Input input = new Input(sheetTestSteps, testStepsSerialNumber,testCaseNumber, testCaseExecutionFlag, objectArray);
 									stepInput.setObjArray(objectArray);
 
-									TestStepInputs testStepInput = new TestStepInputs(testStepsSerialNumber, testCaseNumber, testStepsDescription, webElement, webElementValue, inputValue, testStepsKeyword, Constants.KEYWORD_PASS, result.getMessage(), testStepsComparisonType, testStepsValueOne, testStepsValueTwo, testStepsFailMessage);
+									TestStepInputs testStepInput = new TestStepInputs(testStepsSerialNumber, testCaseNumber, testStepsDescription, webElement, webElementValue, inputValue, testStepsKeyword, Constants.KEYWORD_PASS, result.getMessage(), testStepsAssertMethod, testStepsActualValue, testStepsExpectedValue);
 									testStepInputsList.add(testStepInput);
 									inputs.add(input);
 

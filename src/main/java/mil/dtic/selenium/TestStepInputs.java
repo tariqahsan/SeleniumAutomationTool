@@ -11,10 +11,10 @@ public class TestStepInputs {
 	String testStepsKeyword;
 	String result;
 	String message;
-	String comparisonType;
-	String valueOne;
-	String valueTwo;
-	String failMessage;
+	String assertMethod;
+	String actualValue;
+	String expectedValue;
+	
 	
 	public TestStepInputs() {
 		// No arg constructor
@@ -23,7 +23,7 @@ public class TestStepInputs {
 	// Field constructor
 	public TestStepInputs(String testStepsSerialNumber, String testStepCaseNumber, String testStepsDescription,
 			String webElement, String webElementValue, String inputValue, String testStepsKeyword, String result,
-			String message, String comparisonType, String valueOne, String valueTwo, String failMessage) {
+			String message, String assertMethod, String actualValue, String expectedValue) {
 		super();
 		this.testStepsSerialNumber = testStepsSerialNumber;
 		this.testStepCaseNumber = testStepCaseNumber;
@@ -34,10 +34,9 @@ public class TestStepInputs {
 		this.testStepsKeyword = testStepsKeyword;
 		this.result = result;
 		this.message = message;
-		this.comparisonType = comparisonType;
-		this.valueOne = valueOne;
-		this.valueTwo = valueTwo;
-		this.failMessage = failMessage;
+		this.assertMethod = assertMethod;
+		this.actualValue = actualValue;
+		this.expectedValue = expectedValue;
 	}
 
 	public String getTestStepsSerialNumber() {
@@ -112,36 +111,28 @@ public class TestStepInputs {
 		this.message = message;
 	}
 
-	public String getComparisonType() {
-		return comparisonType;
+	public String getAssertMethod() {
+		return assertMethod;
 	}
 
-	public void setComparisonType(String comparisonType) {
-		this.comparisonType = comparisonType;
+	public void setAssertMethod(String assertMethod) {
+		this.assertMethod = assertMethod;
 	}
 
-	public String getValueOne() {
-		return valueOne;
+	public String getActualValue() {
+		return actualValue;
 	}
 
-	public void setValueOne(String valueOne) {
-		this.valueOne = valueOne;
+	public void setActualValue(String actualValue) {
+		this.actualValue = actualValue;
 	}
 
-	public String getValueTwo() {
-		return valueTwo;
+	public String getExpectedValue() {
+		return expectedValue;
 	}
 
-	public void setValueTwo(String valueTwo) {
-		this.valueTwo = valueTwo;
-	}
-
-	public String getFailMessage() {
-		return failMessage;
-	}
-
-	public void setFailMessage(String failMessage) {
-		this.failMessage = failMessage;
+	public void setExpectedValue(String expectedValue) {
+		this.expectedValue = expectedValue;
 	}
 
 	@Override
@@ -149,9 +140,8 @@ public class TestStepInputs {
 		return "TestStepInputs [testStepsSerialNumber=" + testStepsSerialNumber + ", testStepCaseNumber="
 				+ testStepCaseNumber + ", testStepsDescription=" + testStepsDescription + ", webElement=" + webElement
 				+ ", webElementValue=" + webElementValue + ", inputValue=" + inputValue + ", testStepsKeyword="
-				+ testStepsKeyword + ", result=" + result + ", message=" + message + ", comparisonType="
-				+ comparisonType + ", valueOne=" + valueOne + ", valueTwo=" + valueTwo + ", failMessage=" + failMessage
-				+ "]";
+				+ testStepsKeyword + ", result=" + result + ", message=" + message + ", assertMethod=" + assertMethod
+				+ ", actualValue=" + actualValue + ", expectedValue=" + expectedValue + "]";
 	}
-	
+
 }
